@@ -12,3 +12,5 @@
 	clean = git-lfs clean %f
 [core]
 	editor = vim -c \"set fenc=utf-8\"
+[commit]
+	template = /Users/takahashiyoshikazu/.gitmessage.txt

@@ -1,0 +1,36 @@
+
+# fix, add, changeといった事実ではなく、このcommitで実現する要件や仕様を書きましょう。（リファクタなどは除く）
+#
+# 良いコミットメッセージ
+# Allow login passwords longer than 20 characters (20 文字より長いログインパスワードを認める)
+# Recache password database after changing password (パスワード変更後データベースをキャッシュし直す)
+# Animate thumbnail images when they appear (サムネイル画像が現れる時アニメーションさせる)
+# Trim thumbnail images larger than 200x200 px (200x200 px より大きいサムネイル画像を切り落とす)
+#
+# コメント集）
+# - Fix
+# 単語のセット  代表例        意味           実際のコメント
+# fix,in     Fix A in B  Bの箇所のAを修正  Fix typo in docs
+# fix,for    Fix for A   Aに対する修正    Fix for #4183
+# fix,to     Fix A to B  BへのAを修正     Fix link to the spec
+# fix,of     Fix A of B  BのAを修正      Fix location of favicon
+#
+# - Add
+# 単語のセット  代表例         意味        実際のコメント
+# add,to     Add A to B   BにAを追加   add .js to import
+# add,for    Add A for B  B用にAを追加  Add test for bug #3116
+#
+# - Remove
+# 単語のセット     代表例            意味          実際のコメント
+# remove,from   Remove A from B BからAを除去    Remove Debug from tests
+# remove,in     Remove A in B   Bの箇所のAを除去 Remove duplication in render function
+# remove,unused Remove unused A 不必要なAを除去  Remove unused code
+#
+# 例）
+# - Update Modernizr to v1.6
+# - Make it possible to have IDs per request
+# - Make sure to reset default_url_options（必ずリセットする）
+# - Don't use "assert_not_nil"
+# - Allow the user to drag faster
+# - Remove methods to avoid warnings.
+#
