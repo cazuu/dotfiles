@@ -10,3 +10,5 @@
 	smudge = git-lfs smudge %f
 	required = true
 	clean = git-lfs clean %f
+[core]
+	editor = vim -c \"set fenc=utf-8\"
