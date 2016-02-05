@@ -6,6 +6,9 @@
         st = status
         ci = commit
         dc = diff --cached
+        br = branch
+        ck = checkout
+        cp = fetch -p
 [filter "lfs"]
 	smudge = git-lfs smudge %f
 	required = true

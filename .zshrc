@@ -10,8 +10,8 @@ export LC_ALL=en_US.UTF-8
 export EDITOR=/usr/local/bin/vim
 
 # ページャ
-export PAGER=/usr/local/bin/vimpager
-export MANPAGER=/usr/local/bin/vimpager
+#export PAGER=/usr/local/bin/vimpager
+#export MANPAGER=/usr/local/bin/vimpager
 
 
 # -------------------------------------
