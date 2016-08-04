@@ -1,11 +1,12 @@
 [user]
-	email = takahashi21@users.noreply.github.com
+	email  = takahashi21@users.noreply.github.com
 	name = takahashi21
 [alias]
 	tree = log --graph --all --format=\"%x09%C(cyan bold)%an%Creset%x09%C(yellow)%h%Creset %C(magenta reverse)%d%Creset %s\"
-        st = status
+        st = status --short --branch
         ci = commit
-        dc = diff --cached
+        dc = diff --cached --color-words
+        df = diff --color-words
         br = branch
         ck = checkout
         fp = fetch -p
@@ -14,6 +15,9 @@
 	required = true
 	clean = git-lfs clean %f
 [core]
-	editor = vim -c \"set fenc=utf-8\"
+	editor = vim -C \"set fenc=utf-8\"
+	attributesfile = /Users/takahashi/.gitattributes_global
 [commit]
-	template = /Users/takahashiyoshikazu/.gitmessage.txt
+	template = /Users/takahashi/dotfiles/.gitmessage.txt
+[color]
+	ui = auto
