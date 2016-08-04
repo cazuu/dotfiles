@@ -1,6 +1,5 @@
 [user]
-	email  = takahashi21@users.noreply.github.com
-	name = takahashi21
+	useConfigOnly = true
 [alias]
 	tree = log --graph --all --format=\"%x09%C(cyan bold)%an%Creset%x09%C(yellow)%h%Creset %C(magenta reverse)%d%Creset %s\"
         st = status --short --branch
