@@ -9,6 +9,7 @@
         br = branch
         ck = checkout
         fp = fetch -p
+        head = push origin HEAD
 [filter "lfs"]
 	smudge = git-lfs smudge %f
 	required = true
