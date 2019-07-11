@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# cancel commmit 
-git reset "${1:---soft}" HEAD^
