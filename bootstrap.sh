@@ -119,8 +119,8 @@ brew_bundle() {
     sudo -- sh -c "echo '/usr/local/bin/zsh' >> /etc/shells"
     chsh -s /usr/local/bin/zsh
 
-    cp -f /usr/local/opt/ricty/share/fonts/Ricty*.ttf ~/Library/Fonts/
-    fc-cache -vf
+    #cp -f /usr/local/opt/ricty/share/fonts/Ricty*.ttf ~/Library/Fonts/
+    #fc-cache -vf
 
     echo 
 }
