@@ -43,7 +43,7 @@ e_arrow() {
 
 dotfiles_download() {
     if [ -d "$DOTPATH" ]; then
-        log_fail "$DOTPATH: already exists"
+        e_error "$DOTPATH: already exists"
         exit 1
     fi
 
