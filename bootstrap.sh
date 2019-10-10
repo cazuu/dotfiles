@@ -1,7 +1,15 @@
 #!/bin/bash
 
-DOTPATH="$HOME/dotfiles"
-DOTFILES_GITHUB=""
+DOTPATH="$HOME/dotfiles"; export DOTPATH
+DOTFILES_GITHUB="https://github.com/cazuu/dotfiles.git"; export DOTFILES_GITHUB
+
+dotfiles_logo='
+      | |     | |  / _(_) |           
+    __| | ___ | |_| |_ _| | ___  ___  
+   / _` |/ _ \| __|  _| | |/ _ \/ __| 
+  | (_| | (_) | |_| | | | |  __/\__ \ 
+   \__,_|\___/ \__|_| |_|_|\___||___/ 
+'
 
 # is_exists returns true if executable $1 exists in $PATH
 is_exists() {
@@ -10,10 +18,18 @@ is_exists() {
 }
 
 dotfiles_download() {
+    if [ -d "$DOTPATH" ]; then
+        log_fail "$DOTPATH: already exists"
+        exit 1
+    fi
+
+    e_newline
+    e_header "Downloading dotfiles..."
+
     if is_exists "git"; then
         git clone --recursive "$DOTFILES_GITHUB" "$DOTPATH"
     elif is_exists "curl" || is_exists "wget"; then
-        local tarball=""
+        local tarball="https://github.com/cazuu/dotfiles/archive/master.tar.gz"
         if is_exists "curl"; then
             curl -L "$tarball"
         elif is_exists "wget"; then
@@ -28,6 +44,7 @@ dotfiles_download() {
         echo "curl or wget required"
         exit 1
     fi
+    e_newline && e_done "Download"
 }
 
 install_nodenv() {
@@ -43,10 +60,20 @@ install_nodenv_plugins() {
 }
 
 deploy() {
+    e_newline
+    e_header "Deploying dotfiles..."
+
+    if [ ! -d $DOTPATH ]; then
+        log_fail "$DOTPATH: not found"
+        exit 1
+    fi
+    
     cd "$DOTPATH"
 
     echo
     etc/deploy.sh
+
+    e_newline && e_done "Deploy"
 }
 
 install_homebrew() {
@@ -73,6 +100,8 @@ brew_bundle() {
 
     echo 
 }
+
+echo "$dotfiles_logo"
 
 echo "Dotfiles START"
 
