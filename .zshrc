@@ -20,5 +20,8 @@ fi
 
 zplug load
 
+# alias
+alias ll='ls -al'
+
 export PATH="$HOME/.nodenv/bin:$PATH"
 eval "$(nodenv init -)"
