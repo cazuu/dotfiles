@@ -26,3 +26,23 @@ alias ssh-config-update="rm -rf ~/.ssh/config;cat ~/.ssh/conf.d/config ~/.ssh/co
 
 export PATH="$HOME/.nodenv/bin:$PATH"
 eval "$(nodenv init -)"
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+export PATH="$HOME/Library/flutter/bin:$PATH"
+
+alias enableLocalLoopbackAddress='_enableLocalLoopbackAddress'
+function _enableLocalLoopbackAddress() {
+  for ((i=2;i<256;i++))
+  do
+    sudo ifconfig lo0 alias 127.0.0.$i up
+  done
+}
+
+alias goo='_searchByGoogle'
+function _searchByGoogle() {
+    # 第一引数がない場合はpbpasteの中身を検索単語とする
+    [ -z "$1" ] && searchWord=`pbpaste` || searchWord=$1
+    open https://www.google.co.jp/search\?q\=$searchWord
+}
