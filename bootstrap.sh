@@ -71,9 +71,16 @@ dotfiles_download() {
     e_newline && e_done "Download"
 }
 
+install_command_line_tool() {
+    if ! command -v xcode-select &> /dev/null; then
+	    echo "Install xcode-select"
+	    xcode-select --install
+    fi
+}
+
 install_nodenv() {
-    if ! command -v nodenv > /dev/null 2>&1; then
-        echo "Install nodenv"
+    if ! command -v nodenv > &/dev/null; then
+	    echo "Install nodenv"
 	    git clone https://github.com/nodenv/nodenv.git ~/.nodenv
     fi
 }
@@ -95,6 +102,7 @@ deploy() {
     cd "$DOTPATH"
 
     echo
+    chmod +x etc/deploy.sh
     etc/deploy.sh
 
     e_newline && e_done "Deploy"
@@ -105,7 +113,6 @@ install_homebrew() {
         cd "$DOTPATH"
 
         echo 'Install Homebrew'
-        xcode-select --install
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
 }
@@ -122,15 +129,21 @@ brew_bundle() {
     echo 
 }
 
+activate() {
+	source ~/.zshrc
+}
+
 echo "$dotfiles_logo"
 
 echo "Dotfiles START"
 
 dotfiles_download
+install_command_line_tool
 install_nodenv
 deploy
 install_nodenv_plugins
 install_homebrew
 brew_bundle
+activate
 
 echo "Dotfiles DONE"

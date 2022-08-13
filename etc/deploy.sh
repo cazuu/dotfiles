@@ -15,6 +15,4 @@ for file in .??*; do
     [[ "$file" = ".gitignore" ]] && continue
 
     ln -fvns "$DOTPATH/$file" "$HOME/$file"
-
-    source ~/.zshrc
 done

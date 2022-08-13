@@ -2,7 +2,7 @@ if [ ! -e "${HOME}/.zplug/init.zsh" ]; then
     curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
 fi
 
-bindkey -e
+bindkey -v
 
 source ${HOME}/.zplug/init.zsh
 
