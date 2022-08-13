@@ -76,6 +76,7 @@ install_command_line_tool() {
 	    echo "Install xcode-select"
 	    xcode-select --install
     fi
+    e_newline && e_done "Done command line tool"
 }
 
 install_nodenv() {
@@ -83,11 +84,14 @@ install_nodenv() {
 	    echo "Install nodenv"
 	    git clone https://github.com/nodenv/nodenv.git ~/.nodenv
     fi
+    e_newline && e_done "Done install nodenv"
 }
 
 install_nodenv_plugins() {
-    mkdir -p "$(nodenv root)"/plugins
-    git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
+	if [ ! -d ~/.nodenv/plugins ]; then
+		mkdir -p "$(nodenv root)"/plugins
+		git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
+	fi
 }
 
 deploy() {
@@ -115,18 +119,19 @@ install_homebrew() {
         echo 'Install Homebrew'
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
+    e_newline && e_done "Done install homebrew"
 }
 
 brew_bundle() {
     cd "$DOTPATH"
 
-    echo
+    echo 'brew bundle'
     brew bundle
 
     sudo -- sh -c "echo '/usr/local/bin/zsh' >> /etc/shells"
     chsh -s /usr/local/bin/zsh
 
-    echo 
+    e_newline && e_done "Done brew bundle"
 }
 
 activate() {
@@ -141,9 +146,9 @@ dotfiles_download
 install_command_line_tool
 install_nodenv
 deploy
-install_nodenv_plugins
 install_homebrew
 brew_bundle
 activate
+install_nodenv_plugins
 
 echo "Dotfiles DONE"
