@@ -79,7 +79,7 @@ install_command_line_tool() {
 }
 
 install_nodenv() {
-    if ! command -v nodenv > &/dev/null; then
+    if ! command -v nodenv &> /dev/null; then
 	    echo "Install nodenv"
 	    git clone https://github.com/nodenv/nodenv.git ~/.nodenv
     fi
@@ -109,7 +109,7 @@ deploy() {
 }
 
 install_homebrew() {
-    if ! command -v brew > /dev/null 2>&1; then
+    if ! command -v brew &> /dev/null; then
         cd "$DOTPATH"
 
         echo 'Install Homebrew'
