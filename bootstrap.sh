@@ -118,6 +118,7 @@ install_homebrew() {
 
         echo 'Install Homebrew'
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	git -C $(brew --repo homebrew/core) checkout master
     fi
     e_newline && e_done "Done install homebrew"
 }
