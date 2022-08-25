@@ -43,8 +43,8 @@ e_arrow() {
 
 dotfiles_download() {
     if [ -d "$DOTPATH" ]; then
-        e_error "$DOTPATH: already exists"
-        exit 1
+        e_warning "$DOTPATH: already exists"
+        return
     fi
 
     e_newline
@@ -72,16 +72,18 @@ dotfiles_download() {
 }
 
 install_command_line_tool() {
-    if ! command -v xcode-select &> /dev/null; then
-	    echo "Install xcode-select"
+    if ! command xcode-select -p &> /dev/null; then
+	    e_arrow "Install xcode-select"
 	    xcode-select --install
+            read -p "Finished installing xcode-select?"
     fi
+
     e_newline && e_done "Done command line tool"
 }
 
 install_nodenv() {
     if ! command -v nodenv &> /dev/null; then
-	    echo "Install nodenv"
+	    e_arrow "Install nodenv"
 	    git clone https://github.com/nodenv/nodenv.git ~/.nodenv
     fi
     e_newline && e_done "Done install nodenv"
@@ -89,6 +91,7 @@ install_nodenv() {
 
 install_nodenv_plugins() {
 	if [ ! -d ~/.nodenv/plugins ]; then
+                e_arrow "Install nodenv-plugins"
 		mkdir -p "$(nodenv root)"/plugins
 		git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
 	fi
@@ -116,9 +119,13 @@ install_homebrew() {
     if ! command -v brew &> /dev/null; then
         cd "$DOTPATH"
 
-        echo 'Install Homebrew'
-        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	git -C $(brew --repo homebrew/core) checkout master
+        e_arrow 'Install Homebrew'
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        git -C $(brew --repo homebrew/core) checkout master
+    
+        if [[ `uname -m` == 'arm64' ]]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        fi
     fi
     e_newline && e_done "Done install homebrew"
 }
@@ -126,11 +133,13 @@ install_homebrew() {
 brew_bundle() {
     cd "$DOTPATH"
 
-    echo 'brew bundle'
+    e_arrow 'brew bundle'
     brew bundle
 
-    sudo -- sh -c "echo '/usr/local/bin/zsh' >> /etc/shells"
-    chsh -s /usr/local/bin/zsh
+    if [[ `uname -m` == 'x86_64' ]]; then
+        sudo -- sh -c "echo '/usr/local/bin/zsh' >> /etc/shells"
+        chsh -s /usr/local/bin/zsh
+    fi
 
     e_newline && e_done "Done brew bundle"
 }
@@ -145,11 +154,12 @@ echo "Dotfiles START"
 
 dotfiles_download
 install_command_line_tool
-install_nodenv
 deploy
 install_homebrew
 brew_bundle
 activate
+install_nodenv
 install_nodenv_plugins
 
 echo "Dotfiles DONE"
+
