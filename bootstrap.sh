@@ -157,7 +157,7 @@ install_command_line_tool
 deploy
 install_homebrew
 brew_bundle
-activate
+# activate
 install_nodenv
 install_nodenv_plugins
 
