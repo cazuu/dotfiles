@@ -22,6 +22,7 @@ zplug load
 
 # alias
 alias ll='ls -al'
+alias dc='docker compose'
 alias ssh-config-update="rm -rf ~/.ssh/config;cat ~/.ssh/conf.d/config ~/.ssh/conf.d/**/ssh.conf > ~/.ssh/config"
 
 # Library
