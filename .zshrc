@@ -10,6 +10,9 @@ export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
 zplug "zsh-users/zsh-autosuggestions"
 zplug "peco/peco", as:command, from:gh-r
+zplug "modules/prompt", from:prezto
+
+zstyle ':prezto:module:prompt' theme 'minimal'
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]:"
