@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-DOTPATH="$HOME/dotfiles"
+. ./.bin/util.sh
+
+DOTPATH="$HOME/dotfiles/.bin"
+
+e_run 'link.sh'
 
 if [ ! -e "$DOTPATH" ]; then
     echo "Error: Directory $DOTPATH does not exist."
@@ -16,3 +20,5 @@ for file in .??*; do
 
     ln -fvns "$DOTPATH/$file" "$HOME/$file"
 done
+
+e_done 'link.sh'
