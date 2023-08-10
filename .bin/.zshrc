@@ -39,7 +39,9 @@ eval "$(nodenv init -)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-export PATH="$HOME/Library/flutter/bin:$PATH"
+export PATH="$HOME/opt/homebrew/bin/openssl:$PATH"
+
+# Function
 
 alias enableLocalLoopbackAddress='_enableLocalLoopbackAddress'
 function _enableLocalLoopbackAddress() {
