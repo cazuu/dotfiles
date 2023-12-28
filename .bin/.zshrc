@@ -6,7 +6,11 @@ bindkey -v
 
 source ${HOME}/.zplug/init.zsh
 
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+if [[ `uname -m` == 'arm64' ]]; then
+    export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+else
+    export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+fi
 
 zplug "zsh-users/zsh-autosuggestions"
 zplug "peco/peco", as:command, from:gh-r
