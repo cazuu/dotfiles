@@ -17,7 +17,6 @@ brew "mkcert"
 brew "mysql-client"
 brew "node-build"
 brew "nodenv"
-brew "protobuf"
 brew "putty"
 brew "rbenv"
 brew "rust"
@@ -45,6 +44,7 @@ cask "visual-studio-code"
 cask "zoom"
 mas "DaisyDisk", id: 411643860
 mas "WinArchiver Lite", id: 414855915
+mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
 vscode "Dart-Code.dart-code"
 vscode "Dart-Code.flutter"
