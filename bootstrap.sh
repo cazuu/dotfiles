@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. ./.bin/util.sh
+# リモートから直接util.shを取得して実行
+source <(curl -fsSL https://raw.githubusercontent.com/cazuu/dotfiles/master/.bin/util.sh)
 
 DOTPATH="$HOME/dotfiles"; export DOTPATH
 DOTFILES_GITHUB="https://github.com/cazuu/dotfiles.git"; export DOTFILES_GITHUB
