@@ -1,2 +1,2 @@
 ## Install
-bash -c "$(curl -fsSL raw.githubusercontent.com/cazuu/dotfiles/master/bootstrap.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/cazuu/dotfiles/master/bootstrap.sh)"

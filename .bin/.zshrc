@@ -43,7 +43,21 @@ eval "$(nodenv init -)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+export PATH="$HOME/.goenv/bin:$PATH"
+eval "$(goenv init -)"
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
 export PATH="$HOME/opt/homebrew/bin/openssl:$PATH"
+
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+export PATH="$HOME/.local/bin:$PATH"
+
+source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 
 # Function
 
