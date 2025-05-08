@@ -1,76 +1,88 @@
-if [ ! -e "${HOME}/.zplug/init.zsh" ]; then
-    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
+#----------------------------------
+# Antidote プラグイン管理
+#----------------------------------
+# Install Antidote if not present
+if [[ ! -d ${ZDOTDIR:-$HOME}/.antidote ]]; then
+  git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
 fi
+source ${ZDOTDIR:-$HOME}/.antidote/antidote.zsh
 
+#----------------------------------
+# 基本設定
+#----------------------------------
+# Viキーバインド
 bindkey -v
 
-source ${HOME}/.zplug/init.zsh
+#----------------------------------
+# プラグイン設定
+#----------------------------------
+# プラグイン読み込み
+antidote load ${ZDOTDIR:-$HOME}/dotfiles/.bin/.zsh_plugins.txt
 
+# Prezto theme設定
+zstyle ':prezto:module:prompt' theme 'minimal'
+
+# zsh-history-substring-search キーバインディング
+bindkey '^[[A' history-substring-search-up    # 上キー
+bindkey '^[[B' history-substring-search-down  # 下キー
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+
+#----------------------------------
+# 環境変数・PATH設定
+#----------------------------------
+# アーキテクチャ固有の設定 (Intel/Apple Silicon)
 if [[ `uname -m` == 'arm64' ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
     export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 else
     export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 fi
 
-zplug "zsh-users/zsh-autosuggestions"
-zplug "peco/peco", as:command, from:gh-r
-zplug "modules/prompt", from:prezto
-
-zstyle ':prezto:module:prompt' theme 'minimal'
-
-if ! zplug check --verbose; then
-    printf "Install? [y/N]:"
-    if read -q; then
-        echo; zplug install
-    fi
-fi
-
-zplug load
-
-# alias
-alias ll='ls -al'
-alias dc='docker compose'
-alias ssh-config-update="rm -rf ~/.ssh/config;cat ~/.ssh/conf.d/config ~/.ssh/conf.d/**/ssh.conf > ~/.ssh/config"
-
-# Library
-if [[ `uname -m` == 'arm64' ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
-export PATH="$HOME/.nodenv/bin:$PATH"
-eval "$(nodenv init -)"
-
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-export PATH="$HOME/.goenv/bin:$PATH"
-eval "$(goenv init -)"
-
-export PYENV_ROOT="$HOME/.pyenv"
+# 各種開発環境のPATH設定
+export PATH="$HOME/.nodenv/bin:$PATH"         # Node.js
+export PATH="$HOME/.rbenv/bin:$PATH"          # Ruby
+export PATH="$HOME/.goenv/bin:$PATH"          # Go
+export PYENV_ROOT="$HOME/.pyenv"              # Python
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+export PATH="$HOME/opt/homebrew/bin/openssl:$PATH"  # OpenSSL
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"     # PostgreSQL
+export PATH="$HOME/.local/bin:$PATH"          # ユーザーローカルバイナリ
 
-export PATH="$HOME/opt/homebrew/bin/openssl:$PATH"
+#----------------------------------
+# 開発環境初期化
+#----------------------------------
+eval "$(nodenv init -)"     # Node.js
+eval "$(rbenv init -)"      # Ruby
+eval "$(goenv init -)"      # Go
+eval "$(pyenv init -)"      # Python
 
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
-export PATH="$HOME/.local/bin:$PATH"
-
+#----------------------------------
+# Google Cloud SDK
+#----------------------------------
 source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
 source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 
-# Function
+#----------------------------------
+# エイリアス
+#----------------------------------
+alias ll='ls -al'           # 詳細なディレクトリリスト
+alias dc='docker compose'   # Docker Compose
+alias ssh-config-update="rm -rf ~/.ssh/config;cat ~/.ssh/conf.d/config ~/.ssh/conf.d/**/ssh.conf > ~/.ssh/config"
 
-alias enableLocalLoopbackAddress='_enableLocalLoopbackAddress'
-function _enableLocalLoopbackAddress() {
+#----------------------------------
+# ユーティリティ関数
+#----------------------------------
+# enableLocalLoopbackAddress - 複数のローカルループバックアドレスを有効化
+function enableLocalLoopbackAddress() {
   for ((i=2;i<256;i++))
   do
     sudo ifconfig lo0 alias 127.0.0.$i up
   done
 }
 
-alias goo='_searchByGoogle'
-function _searchByGoogle() {
+# goo - Google検索をターミナルから実行
+function goo() {
     # 第一引数がない場合はpbpasteの中身を検索単語とする
     [ -z "$1" ] && searchWord=`pbpaste` || searchWord=$1
     open https://www.google.co.jp/search\?q\=$searchWord

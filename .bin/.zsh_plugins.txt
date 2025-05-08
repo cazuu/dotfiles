@@ -1,0 +1,21 @@
+# Autosuggestions
+zsh-users/zsh-autosuggestions
+
+# Prezto prompt module
+sorin-ionescu/prezto path:modules/prompt
+
+# シンタックスハイライト - コマンド入力時に色付け
+zdharma-continuum/fast-syntax-highlighting
+
+# 補完機能の強化
+zsh-users/zsh-completions kind:fpath path:src
+
+# 履歴検索の強化 - 上下キーで部分一致検索
+zsh-users/zsh-history-substring-search
+
+# Set theme (this is configured in .zshrc via zstyle in the original config)
+# You can add any other plugins you want below
+
+# Recommended plugins for better experience
+# zdharma-continuum/fast-syntax-highlighting
+# zsh-users/zsh-completions kind:fpath path:src 
