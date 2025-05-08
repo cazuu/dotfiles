@@ -1,8 +1,8 @@
 # Autosuggestions
 zsh-users/zsh-autosuggestions
 
-# Prezto prompt module
-sorin-ionescu/prezto path:modules/prompt
+# シンプルなプロンプトテーマ（preztoの代わり）
+sindresorhus/pure kind:fpath
 
 # シンタックスハイライト - コマンド入力時に色付け
 zdharma-continuum/fast-syntax-highlighting

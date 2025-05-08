@@ -16,11 +16,12 @@ bindkey -v
 #----------------------------------
 # プラグイン設定
 #----------------------------------
-# プラグイン読み込み
-antidote load ${ZDOTDIR:-$HOME}/dotfiles/.bin/.zsh_plugins.txt
+# プラグイン読み込み（ファイルパスを絶対パスで指定）
+antidote load ${HOME}/dotfiles/.bin/.zsh_plugins.txt
 
-# Prezto theme設定
-zstyle ':prezto:module:prompt' theme 'minimal'
+# Pure prompt設定
+autoload -U promptinit; promptinit
+prompt pure
 
 # zsh-history-substring-search キーバインディング
 bindkey '^[[A' history-substring-search-up    # 上キー
