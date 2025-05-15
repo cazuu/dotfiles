@@ -24,6 +24,15 @@ defaults write com.apple.CrashReporter DialogType -string "none"
 
 # ====================
 #
+# Screenshots
+#
+# ====================
+
+# Set screenshots location to Downloads folder
+defaults write com.apple.screencapture location -string "$HOME/Downloads"
+
+# ====================
+#
 # Dock
 #
 # ====================
