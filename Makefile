@@ -17,10 +17,11 @@ system:
 brew:
 	.bin/brew.sh
 
-brew-update:
+brew\:update:
 	brew update
 	brew upgrade --cask
 	brew bundle --global
 
-brew-dump:
+brew\:dump:
 	brew bundle dump --file=.bin/.Brewfile --force
+
