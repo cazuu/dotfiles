@@ -70,6 +70,7 @@ source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 alias ll='ls -al'           # 詳細なディレクトリリスト
 alias dc='docker compose'   # Docker Compose
 alias ssh-config-update="rm -rf ~/.ssh/config;cat ~/.ssh/conf.d/config ~/.ssh/conf.d/**/ssh.conf > ~/.ssh/config"
+alias clean-branch="git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -d"
 
 #----------------------------------
 # ユーティリティ関数
