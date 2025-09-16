@@ -89,3 +89,8 @@ function goo() {
     [ -z "$1" ] && searchWord=`pbpaste` || searchWord=$1
     open https://www.google.co.jp/search\?q\=$searchWord
 }
+
+# Added by Windsurf
+export PATH="/Users/cazuu/.codeium/windsurf/bin:$PATH"
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
