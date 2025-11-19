@@ -32,23 +32,25 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 #----------------------------------
 # 環境変数・PATH設定
 #----------------------------------
-# アーキテクチャ固有の設定 (Intel/Apple Silicon)
-if [[ `uname -m` == 'arm64' ]]; then
+# アーキテクチャ固有の設定 (Apple Silicon)
+if [[ $(uname -m) == 'arm64' && -x /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
-else
-    export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 fi
 
 # 各種開発環境のPATH設定
 export PATH="$HOME/.nodenv/bin:$PATH"         # Node.js
 export PATH="$HOME/.rbenv/bin:$PATH"          # Ruby
 export PATH="$HOME/.goenv/bin:$PATH"          # Go
-export PYENV_ROOT="$HOME/.pyenv"              # Python
-export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$HOME/opt/homebrew/bin/openssl:$PATH"  # OpenSSL
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"     # PostgreSQL
 export PATH="$HOME/.local/bin:$PATH"          # ユーザーローカルバイナリ
+export PATH="/usr/local/sbin:$PATH"
+
+command -v brew >/dev/null 2>&1 && {
+  export PATH="$(brew --prefix openssl@3)/bin:$PATH"
+  export PATH="$(brew --prefix libpq)/bin:$PATH"
+  export PATH="$(brew --prefix mysql-client)/bin:$PATH"
+}
 
 #----------------------------------
 # 開発環境初期化
@@ -56,7 +58,7 @@ export PATH="$HOME/.local/bin:$PATH"          # ユーザーローカルバイ�
 eval "$(nodenv init -)"     # Node.js
 eval "$(rbenv init -)"      # Ruby
 eval "$(goenv init -)"      # Go
-eval "$(pyenv init -)"      # Python
+eval "$(direnv hook zsh)"   # direnv
 
 #----------------------------------
 # Google Cloud SDK
