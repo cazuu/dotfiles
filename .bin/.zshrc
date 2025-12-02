@@ -38,11 +38,6 @@ if [[ $(uname -m) == 'arm64' && -x /opt/homebrew/bin/brew ]]; then
 fi
 
 # 各種開発環境のPATH設定
-export PATH="$HOME/.nodenv/bin:$PATH"         # Node.js
-export PATH="$HOME/.rbenv/bin:$PATH"          # Ruby
-export PATH="$HOME/.goenv/bin:$PATH"          # Go
-export PATH="$HOME/opt/homebrew/bin/openssl:$PATH"  # OpenSSL
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"     # PostgreSQL
 export PATH="$HOME/.local/bin:$PATH"          # ユーザーローカルバイナリ
 export PATH="/usr/local/sbin:$PATH"
 
@@ -55,10 +50,7 @@ command -v brew >/dev/null 2>&1 && {
 #----------------------------------
 # 開発環境初期化
 #----------------------------------
-eval "$(nodenv init -)"     # Node.js
-eval "$(rbenv init -)"      # Ruby
-eval "$(goenv init -)"      # Go
-eval "$(direnv hook zsh)"   # direnv
+eval "$(mise activate zsh)" # mise
 
 #----------------------------------
 # Google Cloud SDK

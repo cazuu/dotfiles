@@ -21,4 +21,7 @@ for file in .??*; do
     ln -fvns "$DOTPATH/$file" "$HOME/$file"
 done
 
+mkdir -p "$HOME/.config/mise"
+ln -fvns "$HOME/dotfiles/mise/config.toml" "$HOME/.config/mise/config.toml"
+
 e_done 'link.sh'
