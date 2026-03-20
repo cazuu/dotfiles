@@ -1,9 +1,48 @@
 [tools]
 gh = "latest"
+go = "latest"
+java = "openjdk-17"
 node = "22"
 "npm:@anthropic-ai/claude-code" = "latest"
 "npm:@openai/codex" = "latest"
 packer = "latest"
+pnpm = "latest"
 python = "3.12"
 ruby = "3.1.3"
 terraform = "latest"
+
+[tasks."poetry:install"]
+run = "curl -sSL https://install.python-poetry.org | python3 -"
+description = "Poetry をインストール/更新"
+
+[tasks."sim:ios"]
+run = "xcrun simctl boot 'iPhone 16' 2>/dev/null; open -a Simulator"
+description = "iPhone 16 シミュレーターを起動"
+
+# tmux session management
+[tasks."tmux:new"]
+run = "tmux new-session -s {{arg(name=\"session\", default=\"main\")}}"
+description = "新規tmuxセッションを作成 (usage: mise run tmux:new [session_name])"
+
+[tasks."tmux:ls"]
+run = "tmux list-sessions 2>/dev/null || echo 'No active sessions'"
+description = "tmuxセッション一覧を表示"
+
+[tasks."tmux:attach"]
+run = "tmux attach-session -t {{arg(name=\"session\", default=\"main\")}}"
+description = "tmuxセッションにアタッチ (usage: mise run tmux:attach [session_name])"
+
+[tasks."tmux:kill"]
+run = "tmux kill-session -t {{arg(name=\"session\")}}"
+description = "tmuxセッションを終了 (usage: mise run tmux:kill <session_name>)"
+
+[tasks."tmux:4pane"]
+run = "bash -c 'S=$1; tmux new-session -d -s $S && tmux split-window -h -t $S && tmux split-window -v -t $S && tmux split-window -v -t $S && tmux select-layout -t $S tiled && tmux select-pane -t $S:1.1 && tmux attach-session -t $S' _ {{arg(name=\"session\", default=\"work\")}}"
+description = "4ペインレイアウトでセッション作成 (usage: mise run tmux:4pane [session_name])"
+
+[tasks."tmux:2col"]
+run = "bash -c 'S=${1:-work}; tmux new-session -d -s $S && tmux split-window -h -t $S && tmux select-pane -t $S:1.1 && tmux attach-session -t $S' _ {{arg(name=\"session\", default=\"work\")}}"
+description = "左右2ペインでセッション作成 (usage: mise run tmux:2col [session_name])"
+
+[settings]
+experimental = true

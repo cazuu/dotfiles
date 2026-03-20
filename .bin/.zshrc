@@ -50,7 +50,17 @@ command -v brew >/dev/null 2>&1 && {
 #----------------------------------
 # 開発環境初期化
 #----------------------------------
+export MISE_AQUA_REGISTRY_SKIP_ATTESTATION=1
 eval "$(mise activate zsh)" # mise
+
+#----------------------------------
+# Android SDK
+#----------------------------------
+[[ -d "$HOME/Library/Android/sdk" ]] && {
+  export ANDROID_HOME="$HOME/Library/Android/sdk"
+  export PATH="$ANDROID_HOME/emulator:$PATH"
+  export PATH="$ANDROID_HOME/platform-tools:$PATH"
+}
 
 #----------------------------------
 # Google Cloud SDK
@@ -88,3 +98,9 @@ function goo() {
 export PATH="/Users/cazuu/.codeium/windsurf/bin:$PATH"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+export PATH="$HOME/go/bin:$PATH"
+
+# Locale settings
+export LANG=ja_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
