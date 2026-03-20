@@ -20,8 +20,7 @@ e_arrow "Done command line tool"
 e_arrow 'Install Homebrew'
 if ! command -v brew &> /dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" > /dev/null
-    git -C $(brew --repo homebrew/core) checkout master
-    
+
     if [[ `uname -m` == 'arm64' ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi  

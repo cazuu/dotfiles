@@ -65,8 +65,10 @@ eval "$(mise activate zsh)" # mise
 #----------------------------------
 # Google Cloud SDK
 #----------------------------------
-source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+if [[ -f "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc" ]]; then
+  source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+  source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+fi
 
 #----------------------------------
 # エイリアス
@@ -74,7 +76,7 @@ source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 alias ll='ls -al'           # 詳細なディレクトリリスト
 alias dc='docker compose'   # Docker Compose
 alias ssh-config-update="rm -rf ~/.ssh/config;cat ~/.ssh/conf.d/config ~/.ssh/conf.d/**/ssh.conf > ~/.ssh/config"
-alias clean-branch="git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -d"
+alias clean-branch="git branch -vv | awk '/: gone]/{print \$1}' | xargs git branch -d"
 
 #----------------------------------
 # ユーティリティ関数
@@ -95,9 +97,9 @@ function goo() {
 }
 
 # Added by Windsurf
-export PATH="/Users/cazuu/.codeium/windsurf/bin:$PATH"
+export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+[[ "$TERM_PROGRAM" == "kiro" ]] && command -v kiro >/dev/null 2>&1 && . "$(kiro --locate-shell-integration-path zsh)"
 
 export PATH="$HOME/go/bin:$PATH"
 
