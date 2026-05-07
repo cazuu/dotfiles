@@ -43,5 +43,31 @@ description = "4ペインレイアウトでセッション作成 (usage: mise ru
 run = "bash -c 'S=${1:-work}; tmux new-session -d -s $S && tmux split-window -h -t $S && tmux select-pane -t $S:1.1 && tmux attach-session -t $S' _ {{arg(name=\"session\", default=\"work\")}}"
 description = "左右2ペインでセッション作成 (usage: mise run tmux:2col [session_name])"
 
+# git worktree management
+[tasks."wt:add"]
+run = """
+BRANCH={{arg(name="branch")}}
+REPO=$(basename $(git rev-parse --show-toplevel))
+WTPATH="../${REPO}.worktree/${BRANCH}"
+if git show-ref --verify --quiet "refs/heads/$BRANCH" || git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
+  git worktree add "$WTPATH" "$BRANCH"
+else
+  git worktree add -b "$BRANCH" "$WTPATH"
+fi
+"""
+description = "worktreeを追加・新規ブランチも可 (usage: mise run wt:add <branch>)"
+
+[tasks."wt:rm"]
+run = """
+BRANCH={{arg(name="branch")}}
+REPO=$(basename $(git rev-parse --show-toplevel))
+git worktree remove "../${REPO}.worktree/${BRANCH}"
+"""
+description = "worktreeを削除 (usage: mise run wt:rm <branch>)"
+
+[tasks."wt:ls"]
+run = "git worktree list"
+description = "worktree一覧を表示"
+
 [settings]
 experimental = true
