@@ -106,3 +106,5 @@ export PATH="$HOME/go/bin:$PATH"
 # Locale settings
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
+
+[[ -f ~/.zshrc.private ]] && source ~/.zshrc.private
