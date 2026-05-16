@@ -32,6 +32,7 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 #----------------------------------
 # 環境変数・PATH設定
 #----------------------------------
+typeset -U path PATH
 # アーキテクチャ固有の設定 (Apple Silicon)
 if [[ $(uname -m) == 'arm64' && -x /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -96,12 +97,13 @@ function goo() {
     open https://www.google.co.jp/search\?q\=$searchWord
 }
 
-# Added by Windsurf
-export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+[[ -d "$HOME/.codeium/windsurf/bin" ]] && export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+
+[[ -d "$HOME/.antigravity/antigravity/bin" ]] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && command -v kiro >/dev/null 2>&1 && . "$(kiro --locate-shell-integration-path zsh)"
 
-export PATH="$HOME/go/bin:$PATH"
+[[ -d "$HOME/go/bin" ]] && export PATH="$HOME/go/bin:$PATH"
 
 # Locale settings
 export LANG=ja_JP.UTF-8
