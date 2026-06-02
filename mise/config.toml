@@ -70,5 +70,8 @@ description = "worktreeを削除 (usage: mise run wt:rm <branch>)"
 run = "git worktree list"
 description = "worktree一覧を表示"
 
+[env]
+COMPOSE_BAKE = "0"
+
 [settings]
 experimental = true
