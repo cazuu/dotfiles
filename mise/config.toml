@@ -44,6 +44,10 @@ description = "4ペインレイアウトでセッション作成 (usage: mise ru
 run = "bash -c 'S=${1:-work}; tmux new-session -d -s $S && tmux split-window -h -t $S && tmux select-pane -t $S:1.1 && tmux attach-session -t $S' _ {{arg(name=\"session\", default=\"work\")}}"
 description = "左右2ペインでセッション作成 (usage: mise run tmux:2col [session_name])"
 
+[tasks."claude:bridge"]
+run = "$HOME/.local/share/claude-slack-bridge/venv/bin/python $HOME/dotfiles/claude/slack_bridge.py"
+description = "Claude Code ↔ Slack ブリッジを起動 (claude/README.md 参照)"
+
 # git worktree management
 [tasks."wt:add"]
 run = """

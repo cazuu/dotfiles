@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/dotfiles/claude/notify-slack.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
