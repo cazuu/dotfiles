@@ -1,11 +1,15 @@
 [tools]
+cfn-lint = "latest"
 gh = "latest"
 go = "latest"
 java = "openjdk-17"
 node = "22"
 "npm:@openai/codex" = "latest"
 "npm:firebase-tools" = "latest"
+"npm:intelephense" = "latest"
+"npm:pyright" = "latest"
 packer = "latest"
+pipx = "latest"
 pnpm = "latest"
 python = "3.12"
 ruby = "3.1.3"
@@ -69,6 +73,14 @@ description = "worktreeを削除 (usage: mise run wt:rm <branch>)"
 [tasks."wt:ls"]
 run = "git worktree list"
 description = "worktree一覧を表示"
+
+[tasks."wt:path"]
+run = """
+BRANCH={{arg(name="branch")}}
+ROOT=$(git rev-parse --show-toplevel)
+echo "$(dirname "$ROOT")/$(basename "$ROOT").worktree/${BRANCH}"
+"""
+description = "worktreeのパスを出力 (usage: cd $(mise run wt:path <branch>))"
 
 [env]
 COMPOSE_BAKE = "0"
