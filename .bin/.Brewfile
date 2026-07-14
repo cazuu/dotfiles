@@ -52,7 +52,6 @@ mas "WireGuard", id: 1451685025
 vscode "anthropic.claude-code"
 vscode "docker.docker"
 vscode "esbenp.prettier-vscode"
-vscode "github.copilot-chat"
 vscode "hashicorp.terraform"
 vscode "jackiotyu.git-worktree-manager"
 vscode "mhutchie.git-graph"
