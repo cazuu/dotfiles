@@ -1,7 +1,6 @@
 tap "hashicorp/tap"
 brew "act"
 brew "openssl@3"
-brew "awscli"
 brew "bitrise"
 brew "carthage"
 brew "cloud-sql-proxy"
