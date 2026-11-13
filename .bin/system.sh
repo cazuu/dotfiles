@@ -1,6 +1,9 @@
 #!/bin/bash
 
-. ./.bin/util.sh
+# shellcheck source=.bin/util.sh
+. "$(cd "$(dirname "$0")" && pwd)/util.sh"
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 if [ "$(uname)" != "Darwin" ] ; then
 	echo "Not macOS!"
@@ -41,8 +44,10 @@ defaults write com.apple.screencapture location -string "$HOME/Downloads"
 # Disable animation at application launch
 defaults write com.apple.dock launchanim -bool false
 
-# Remove pre-install application in Dock
-defaults write com.apple.dock persistent-apps -array
+# 実行のたびに Dock が空になるので、初回セットアップ時だけ明示的に有効化する
+if [ "${DOTFILES_RESET_DOCK:-}" = "1" ]; then
+	defaults write com.apple.dock persistent-apps -array
+fi
 
 # ====================
 #
@@ -77,25 +82,13 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
 # ====================
 #
-# SystemUIServer
+# iTerm2
 #
 # ====================
 
-# Display date, day, and time in the menu bar
-defaults write com.apple.menuextra.clock DateFormat -string 'EEE d MMM HH:mm'
-
-# Display battery level in the menu bar
-#defaults write com.apple.menuextra.battery ShowPercent -string "YES"
-
-
-# ====================
-#
-# Safari
-#
-# ====================
-
-# url is full path in address bar
-defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+# Load preferences from this repository
+defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$REPO_ROOT/iterm"
+defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
 
 for app in "Dock" \
 	"Finder" \

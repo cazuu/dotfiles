@@ -1,7 +1,9 @@
+.PHONY: all init link system brew brew\:update brew\:check
+
 # Do everything.
 all: init link system brew
 
-# Set initial preference.
+# Install Command Line Tools and Homebrew.
 init:
 	.bin/init.sh
 
@@ -13,15 +15,14 @@ link:
 system:
 	.bin/system.sh
 
-# Install macOS applications.
+# Install applications from ~/.Brewfile (and ~/.Brewfile.local if present).
 brew:
-	.bin/brew.sh
+	.bin/brew.sh install
 
+# Update Homebrew and all packages.
 brew\:update:
-	brew update
-	brew upgrade --cask
-	brew bundle --global
+	.bin/brew.sh update
 
-brew\:dump:
-	brew bundle dump --file=.bin/.Brewfile --force
-
+# Show packages missing from this machine and packages not listed in any Brewfile.
+brew\:check:
+	.bin/brew.sh check

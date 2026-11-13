@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. ./.bin/util.sh
+# shellcheck source=.bin/util.sh
+. "$(cd "$(dirname "$0")" && pwd)/util.sh"
 
 if [ "$(uname)" != "Darwin" ] ; then
 	echo "Not macOS!"
@@ -9,22 +10,18 @@ fi
 
 e_run "init.sh"
 
-# Install xcode
-e_arrow "Install xcode-select"
-if ! command xcode-select -p &> /dev/null; then
-    xcode-select --install > /dev/null
-fi
-e_arrow "Done command line tool"
+e_arrow "Install Command Line Tools"
+ensure_clt
+e_arrow "Done Command Line Tools"
 
-# Install brew
 e_arrow 'Install Homebrew'
-if ! command -v brew &> /dev/null; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" > /dev/null
-
-    if [[ `uname -m` == 'arm64' ]]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    fi  
+if ! load_brew_env; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if ! load_brew_env; then
+        e_error "Homebrew not found after install"
+        exit 1
+    fi
 fi
-e_arrow "Done install homebrew"
+e_arrow "Done install Homebrew"
 
 e_done "init.sh"
