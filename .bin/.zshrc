@@ -1,11 +1,19 @@
+typeset -U path PATH
 
-# Kiro CLI pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+#----------------------------------
+# Homebrew（Apple Silicon / Intel 共通）
+#----------------------------------
+for _brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+  if [[ -x $_brew_bin ]]; then
+    eval "$($_brew_bin shellenv)"
+    break
+  fi
+done
+unset _brew_bin
 
 #----------------------------------
 # Antidote プラグイン管理
 #----------------------------------
-# Install Antidote if not present
 if [[ ! -d ${ZDOTDIR:-$HOME}/.antidote ]]; then
   git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
 fi
@@ -17,11 +25,18 @@ source ${ZDOTDIR:-$HOME}/.antidote/antidote.zsh
 # Viキーバインド
 bindkey -v
 
+# 履歴
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt share_history hist_ignore_all_dups hist_reduce_blanks extended_history
+
 #----------------------------------
 # プラグイン設定
 #----------------------------------
-# プラグイン読み込み（ファイルパスを絶対パスで指定）
 antidote load ${HOME}/dotfiles/.bin/.zsh_plugins.txt
+
+autoload -Uz compinit && compinit
 
 # Pure prompt設定
 autoload -U promptinit; promptinit
@@ -36,27 +51,21 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 #----------------------------------
 # 環境変数・PATH設定
 #----------------------------------
-typeset -U path PATH
-# アーキテクチャ固有の設定 (Apple Silicon)
-if [[ $(uname -m) == 'arm64' && -x /opt/homebrew/bin/brew ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
-# 各種開発環境のPATH設定
 export PATH="$HOME/.local/bin:$PATH"          # ユーザーローカルバイナリ
 export PATH="/usr/local/sbin:$PATH"
 
-command -v brew >/dev/null 2>&1 && {
-  export PATH="$(brew --prefix openssl@3)/bin:$PATH"
-  export PATH="$(brew --prefix libpq)/bin:$PATH"
-  export PATH="$(brew --prefix mysql-client)/bin:$PATH"
-}
+if [[ -n $HOMEBREW_PREFIX ]]; then
+  for _formula in openssl@3 libpq mysql-client; do
+    [[ -d $HOMEBREW_PREFIX/opt/$_formula/bin ]] && export PATH="$HOMEBREW_PREFIX/opt/$_formula/bin:$PATH"
+  done
+  unset _formula
+fi
 
 #----------------------------------
 # 開発環境初期化
 #----------------------------------
 export MISE_AQUA_REGISTRY_SKIP_ATTESTATION=1
-eval "$(mise activate zsh)" # mise
+command -v mise >/dev/null 2>&1 && eval "$(mise activate zsh)"
 
 #----------------------------------
 # Android SDK
@@ -70,9 +79,9 @@ eval "$(mise activate zsh)" # mise
 #----------------------------------
 # Google Cloud SDK
 #----------------------------------
-if [[ -f "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc" ]]; then
-  source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-  source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+if [[ -f "$HOMEBREW_PREFIX/share/google-cloud-sdk/path.zsh.inc" ]]; then
+  source "$HOMEBREW_PREFIX/share/google-cloud-sdk/path.zsh.inc"
+  source "$HOMEBREW_PREFIX/share/google-cloud-sdk/completion.zsh.inc"
 fi
 
 #----------------------------------
@@ -80,7 +89,7 @@ fi
 #----------------------------------
 alias ll='ls -al'           # 詳細なディレクトリリスト
 alias dc='docker compose'   # Docker Compose
-alias ssh-config-update="rm -rf ~/.ssh/config;cat ~/.ssh/conf.d/config ~/.ssh/conf.d/**/ssh.conf > ~/.ssh/config"
+alias ssh-config-update="rm -f ~/.ssh/config;cat ~/.ssh/conf.d/config ~/.ssh/conf.d/**/ssh.conf > ~/.ssh/config"
 alias clean-branch="git branch -vv | awk '/: gone]/{print \$1}' | xargs git branch -d"
 
 #----------------------------------
@@ -111,10 +120,10 @@ function goo() {
 
 # Locale settings
 export LANG=ja_JP.UTF-8
-export LC_ALL=ja_JP.UTF-8
 
+#----------------------------------
+# リポジトリ外の設定（任意）
+#----------------------------------
 [[ -f ~/.zshrc.private ]] && source ~/.zshrc.private
-
-
-# Kiro CLI post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+# 機種固有の設定や、ツールが自動追記したがる行はここに書く（リポジトリの .zshrc を汚さないため）
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

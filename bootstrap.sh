@@ -3,8 +3,19 @@
 # util.sh functions directly embedded
 # is_exists returns true if executable $1 exists in $PATH
 is_exists() {
-    which "$1" >/dev/null 2>&1
-    return $?
+    command -v "$1" >/dev/null 2>&1
+}
+
+# 新規 Mac の git / make は Command Line Tools のスタブなので、先に CLT を入れて完了まで待つ
+ensure_clt() {
+    if xcode-select -p >/dev/null 2>&1; then
+        return 0
+    fi
+    xcode-select --install >/dev/null 2>&1
+    e_arrow "Command Line Tools のインストールダイアログを完了してください（待機中）"
+    until xcode-select -p >/dev/null 2>&1; do
+        sleep 5
+    done
 }
 
 e_newline() {
@@ -63,7 +74,7 @@ dotfiles_download() {
     fi
 
     if is_exists "git"; then
-        git clone --recursive "$DOTFILES_GITHUB" "$DOTPATH"
+        git clone "$DOTFILES_GITHUB" "$DOTPATH"
     else
         local tarball="https://github.com/cazuu/dotfiles/archive/master.tar.gz"
         if is_exists "curl"; then
@@ -81,7 +92,7 @@ dotfiles_download() {
     if [ -d "$DOTPATH" ]; then
         e_done "Download dotfiles"
         if [ -d "$DOTPATH/.bin" ]; then
-            find "$DOTPATH/.bin" -name "*.sh" | xargs chmod +x
+            find "$DOTPATH/.bin" -name "*.sh" -exec chmod +x {} +
         fi
     else
         e_error "Failed to download dotfiles"
@@ -93,10 +104,11 @@ echo "$dotfiles_logo"
 
 e_header "[START] Dotfiles bootstrap"
 
+ensure_clt
 dotfiles_download
 
 if [ -d "$DOTPATH" ]; then
-    cd "$DOTPATH"
+    cd "$DOTPATH" || exit 1
     if is_exists "make"; then
         make all
     else

@@ -1,23 +1,13 @@
 #!/usr/bin/env bash
 
-. ./.bin/util.sh
+# shellcheck source=.bin/util.sh
+. "$(cd "$(dirname "$0")" && pwd)/util.sh"
 
-DOTPATH="$HOME/dotfiles/.bin"
+DOTPATH="$(cd "$(dirname "$0")" && pwd)"
 
 e_run 'link.sh'
 
-if [ ! -e "$DOTPATH" ]; then
-    echo "Error: Directory $DOTPATH does not exist."
-    exit 1
-fi
-
-cd "$DOTPATH" || exit 1
-
-for file in .??*; do
-    [[ "$file" = ".git" ]] && continue
-    [[ "$file" = ".DS_Store" ]] && continue
-    [[ "$file" = ".gitignore" ]] && continue
-
+for file in .zshrc .zsh_plugins.txt .Brewfile; do
     ln -fvns "$DOTPATH/$file" "$HOME/$file"
 done
 
